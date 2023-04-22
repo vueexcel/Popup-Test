@@ -43,6 +43,20 @@
             >
               <span>Add actions</span> <font-awesome-icon icon="fa-plus" />
             </button>
+
+            
+            
+            
+            <!-- THIS IS COMMENTED BUT IS USED TO SEARCH Actions inside of the list, when nothing matches list of actions is shown with checkbox -->
+
+            <!-- WORKS PERFECTLY -->
+
+            <!-- NO CONDITIONS ARE PRESENT -->
+            <!-- PLEASE TRY REMOVING COMMENT TO SEE THE CHANGES -->
+
+
+
+
             <!-- <div class="search-actions">
               <font-awesome-icon
                 icon="fa-solid fa-magnifying-glass"
@@ -86,9 +100,10 @@
                 </div>
               </div>
             </div> -->
+
           </div>
         </div>
-
+        <!-- THIS Component is used to make Tabs inside of Action on Side Bar after action is created -->
         <ReuseButton>
           <template #icon>
             <font-awesome-icon
@@ -105,6 +120,8 @@
             />
           </template>
         </ReuseButton>
+
+        <!-- This goes at the bottom of the sidebar, is shown only when we are done selecting the actions -->
         <div class="control">
           <div class="cancel">Cancel</div>
           <div class="confirm">Confirm</div>
@@ -112,11 +129,15 @@
       </div>
     </div>
     <div class="content">
+
+      <!-- This is shown when no actions are present -->
       <div class="content-empty" v-if="checkSatisfied">
         <p>Your actions will<br />appear here</p>
       </div>
 
       <div class="content-filled" v-else>
+
+        <!-- This is to be shown when we have actions present -->
         <div
           class="content"
           v-for="(newAction, index) in this.selectedActions"
@@ -124,6 +145,8 @@
         >
           {{ newAction.actionName }}
         </div>
+
+        <!-- Detailed Actions are for when tabs are created inside of an action and need to show added tabs on the right side of side bar component -->
         <DetailedActions v-for="(tag, index) in tags" :key="index">
               <template #icon>
                 <font-awesome-icon icon="fa-solid fa-circle" style="margin-right: 15px;" :style="{color: '#298188'}" />
