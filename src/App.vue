@@ -89,7 +89,7 @@
           </div>
         </div>
 
-        <ReuseButton>
+        <ReuseButton v-for="(tag,index) in selectedTag" :key="index">
           <template #icon>
             <font-awesome-icon
               icon="fa-solid fa-circle"
@@ -97,7 +97,7 @@
               :style="{ color: '#298188' }"
             />
           </template>
-          Tag ----
+          {{ tag.name }}
           <template #delete>
             <font-awesome-icon
               icon="fa-solid fa-trash-can"
@@ -186,6 +186,11 @@ export default {
           name: 4,
           color: 'grey'
         }
+      ],
+      selectedTag: [
+        {
+          name: 1,
+        },
       ],
       checkSatisfied: false,
       actionLists: [
