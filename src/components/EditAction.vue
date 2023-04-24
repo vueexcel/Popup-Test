@@ -6,7 +6,9 @@
       </div>
     </template>
   </HeaderSection>
-  <div class="action-body">
+
+  <!-- form for customer tag  -->
+  <div class="action-body" v-if="selectedAction.actionId === '1'">
     <div class="search-actions">
       <font-awesome-icon
         icon="fa-solid fa-plus"
@@ -30,6 +32,33 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- form for http request  -->
+  <div class="action-body" v-if="selectedAction.actionId === '5'">
+    <p class="label">Request Endpoint</p>
+    <input type="url" class="requestEndpointInput" placeholder="Enter Endpoint...">
+    <p class="label">Request Method</p>
+    <select name="requestMethod" id="requestMethod" @change="setRequestMethod">
+      <option value="Post" selected>Post</option>
+      <option value="Put">Put</option>
+      <option value="Delete">Delete</option>
+      <option value="Patch">Patch</option>
+    </select>
+    <div class="keyValueHeader">
+      <div class="flex">
+        <div>Key</div>
+        <div>Value</div>
+        <font-awesome-icon icon="fa-solid fa-plus" class="header-actionBox-icon cursor-pointer" @click="addNewKeyValue" />
+      </div>
+      <div class="flex border-top" v-for="item in requestkeyValues" :key="item.id">
+        <input type="text" placeholder="Enter Key..." class="keyValueInput" v-model="item.key">
+        <input type="text" placeholder="Enter Value..." class="keyValueInput" v-model="item.vlaue">
+        <font-awesome-icon icon="fa-solid fa-trash-can" class="header-actionBox-icon cursor-pointer" @click="deleteKeyValue(item.id)" />
+      </div>
+    </div>
+    <p class="label">Request Body</p>
+    <textarea cols="30" rows="10"></textarea>
   </div>
 </template>
 
@@ -63,6 +92,23 @@ const addTag = () => {
 const deleteTag = (id) => {
   store.dispatch('deleteTagInSelectedAction', id);
 }
+
+// http reqest section
+const requestkeyValues = ref([]);
+const setRequestMethod = (event) => {
+  console.log('selected method is ', event.target.value);
+}
+const addNewKeyValue = () => {
+  requestkeyValues.value.push({key: '', value: '', id: uuid.v4()})
+}
+const deleteKeyValue = (id) => {
+  requestkeyValues.value = requestkeyValues.value.filter(el=> {
+    if(el.id === id) {
+      return null;
+    }
+    return el;
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -80,5 +126,46 @@ const deleteTag = (id) => {
     cursor: pointer;
     color: $danger;
   }
+}
+.keyValueHeader {
+  margin: 1rem 0;
+  @include bordered($color: $muted-light, $type: solid);
+  border-radius: 1rem;
+  width: 100%;
+}
+.flex{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 1rem;
+  width: calc(100%-2rem);
+}
+.border-top {
+  border-top: 1px solid $muted-light;
+}
+.requestEndpointInput, textarea{
+  border: 1px solid $muted-light;
+  border-radius: 1rem;
+  width: 87%;
+  padding: 1rem;
+}
+.keyValueInput{
+  width: 40%;
+  border-right: 1px solid $muted-light;
+}
+.cursor-pointer{
+  cursor: pointer;
+}
+select{
+  border: 1px solid $muted-light;
+  border-radius: 1rem;
+  width: 100%;
+  height: 48px;
+  padding: 1rem;
+}
+.label{
+  font-size: 1rem;
+  font-weight: 600;
+  color: $primary;
 }
 </style>
