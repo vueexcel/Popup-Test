@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 14px;
+  padding: 14px;
   margin: 14px 22px;
   .content {
     background: $grey-light;
@@ -32,6 +32,9 @@
     font-weight: 400;
     font-size: 16px;
     color: $primary;
+  }
+  .delete {
+    color: $grey-light;
   }
 }
 </style>

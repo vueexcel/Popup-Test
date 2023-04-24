@@ -12,5 +12,6 @@
     background: $white;
     border-radius: 14px;
     padding: 20px;
+    margin: 1rem;
 }
 </style>
