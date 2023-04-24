@@ -2,7 +2,8 @@
   <div class="container">
     <div class="sidebar">
       <div class="assignedActionContainer">
-        <ListAction />
+        <EditAction v-if="selectedAction && selectedAction.id" />
+        <ListAction v-else />
         <!-- <ReuseButton v-for="(tag,index) in selectedTag" :key="index">
           <template #icon>
             <font-awesome-icon
@@ -40,67 +41,37 @@
             {{ newAction.actionName }}
           </div> -->
 
+          <ActionDetail />
+
           <!-- Detailed Actions are for when tabs are created inside of an action and need to show added tabs on the right side of side bar component -->
-          <DetailedActions v-for="(tag, index) in tags" :key="index">
+          <!-- <DetailedActions v-for="(tag, index) in tags" :key="index">
                 <template #icon>
                   <font-awesome-icon icon="fa-solid fa-circle" style="margin-right: 15px;" :style="{color: `${tag.color}`}" />
                 </template>
                 <template #content>
                   Tag {{tag.name}}
                 </template>
-            </DetailedActions>
+            </DetailedActions> -->
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 // import ReuseButton from './components/ReuseButton.vue'
-import DetailedActions from './components/DetailedAction.vue'
+import { computed } from 'vue';
+import { useStore } from 'vuex'
+import ActionDetail from './components/ActionDetail.vue'
 import ListAction from './components/ListAction.vue'
-export default {
-  name: "App",
-  components:{
-    // ReuseButton,
-    DetailedActions,
-    ListAction
-  },
-  data() {
-    return {
-      tags: [
-        {
-          name: 1,
-          color: 'cyan'
-        },
-        {
-          name: 2,
-          color: 'red'
-        },
-        {
-          name: 3,
-          color: 'yellow'
-        },
-        {
-          name: 4,
-          color: 'grey'
-        }
-      ],
-      selectedTag: [
-        {
-          name: 1,
-        },
-      ],
-      checkSatisfied: false,
+import EditAction from './components/EditAction.vue'
 
-    };
-  },
-  methods: {
-    submit() {
-      this.checkSatisfied = true;
-    },
-  },
-};
+const store = useStore();
+
+const selectedAction = computed(() => {
+  return store.getters.getSelectedStore;
+})
+
 </script>
 
 <style lang="scss">
@@ -126,6 +97,23 @@ input:focus {
 .border {
   border: 2px solid red;
 }
+
+.search-actions {
+    @include bordered($color: $muted-light, $type: solid);
+    background: $white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: $secondary;
+    .search-actions-icon {
+      margin-right: 16px;
+    }
+    .search-actions-input {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+    }
+  }
+
 .container {
   display: grid;
   background: transparent;
@@ -142,11 +130,13 @@ input:focus {
       width: 100%;
 
       .header {
+        width: calc(100%-44px);
         padding: 22px;
         border-bottom: 1px solid $muted-light;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        position: relative;
 
         .header-title {
           color: $yellow;
@@ -155,11 +145,12 @@ input:focus {
         }
 
         .goBackIcon {
-          margin-right: 1rem;
+          margin-right: 0.5rem;
           cursor: pointer;
         }
 
         .add-action-title {
+          @extend .header-title;
           color: $primary;
         }
 
@@ -245,5 +236,12 @@ input:focus {
       }
     }
   }
+}
+
+.style-list{
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 1rem;
+  @include bordered($color: $muted-light);
 }
 </style>

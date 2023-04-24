@@ -1,16 +1,18 @@
 <template>
-  <div class="header" v-if="!showAddAction">
-    <div class="header-title" >
-      <font-awesome-icon icon="fa-bolt" /> Action
-    </div>
-    <font-awesome-icon icon="fa-solid fa-ellipsis" class="actionIcon" />
-  </div>
-  <div class="header" v-else>
-    <div class="header-title add-action-title">
-      <font-awesome-icon icon="fa-angle-left" class="goBackIcon" @click="hideAddActionPannel"/> Add Actions
-    </div>
-  </div>
-
+  <HeaderSection v-if="!showAddAction" :show-action-option="true">
+    <template #title>
+      <div class="header-title" >
+        <font-awesome-icon icon="fa-bolt" /> Action
+      </div>
+    </template>
+  </HeaderSection>
+  <HeaderSection v-else>
+    <template #title>
+      <div class="add-action-title">
+        <font-awesome-icon icon="fa-angle-left" class="goBackIcon" @click="hideAddActionPannel"/> Add Actions
+      </div>
+    </template>
+  </HeaderSection>
 
   <div class="action-panel">
     <div style="width: 100%">
@@ -23,13 +25,16 @@
       <div class="selectedActionContainer">
         <button
           class="selected-actions"
+          :class="{'disable' : !selectedOption.isActive}"
           v-for="(selectedOption, index) in randomSelectedActions"
           :key="index"
+          @click="setSelectedAction(selectedOption)"
           :style="
             selectedOption.actionId === '1'
               ? 'border-top-left-radius:1rem;border-top-right-radius:1rem'
               : 'border-radius:0rem'
           "
+          :disabled="!selectedOption.isActive"
         >
           <font-awesome-icon
             :icon="selectedOption.actionIcon"
@@ -37,6 +42,11 @@
           />
           <span class="selected-action-title">
             {{ selectedOption.actionName }}
+          </span>
+          <span class="inactive-status" v-if="!selectedOption.isActive">
+            <font-awesome-icon
+            icon="fa-solid fa-circle"
+          /> Inactive
           </span>
         </button>
         <button
@@ -52,16 +62,6 @@
         </button>
       </div>
     </div>
-
-
-
-
-      <!-- THIS IS COMMENTED BUT IS USED TO SEARCH Actions inside of the list, when nothing matches list of actions is shown with checkbox -->
-
-      <!-- WORKS PERFECTLY -->
-
-      <!-- NO CONDITIONS ARE PRESENT -->
-      <!-- PLEASE TRY REMOVING COMMENT TO SEE THE CHANGES -->
 
 
     <div v-else>
@@ -121,6 +121,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import HeaderSection from './HeaderSection.vue'
 import { useStore } from "vuex";
 const store = useStore();
 
@@ -196,6 +197,10 @@ const addSelectedActionToSidebar = () => {
   store.dispatch('addActionToSidebar', selectedActions.value)
   hideAddActionPannel();
 }
+
+const setSelectedAction = (action) => {
+  store.dispatch('setSelectedStore', action);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -218,6 +223,7 @@ const addSelectedActionToSidebar = () => {
   .selectedActionContainer {
     margin: 1.57rem 0;
   }
+
   .selected-actions {
     @include bordered();
     width: 100%;
@@ -238,6 +244,21 @@ const addSelectedActionToSidebar = () => {
       font-size: 16px;
     }
   }
+  .disable {
+    @extend .selected-actions;
+    color: $secondary-300;
+    cursor: not-allowed;
+    position: relative;
+    .selected-action-title{
+      color: $secondary-300;
+    }
+    .inactive-status {
+      position: absolute;
+      right: 1rem;
+      top: 1.4rem;
+      font-size: 0.5rem;
+    }
+  }
   .add-actions {
     @include btn;
     width: 100%;
@@ -245,21 +266,6 @@ const addSelectedActionToSidebar = () => {
     display: flex;
     justify-content: space-between;
     cursor: pointer;
-  }
-  .search-actions {
-    @include bordered($color: $muted-light, $type: solid);
-    background: $white;
-    border-radius: 14px;
-    padding: 14px 16px;
-    color: $secondary;
-    .search-actions-icon {
-      margin-right: 16px;
-    }
-    .search-actions-input {
-      font-style: normal;
-      font-weight: 400;
-      font-size: 16px;
-    }
   }
   .popup-actions {
     margin-top: 14px;

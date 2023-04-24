@@ -12,8 +12,24 @@ import {
   faEnvelope,
   faFileLines,
   faShield,
+  faToggleOff,
+  faToggleOn,
  } from "@fortawesome/free-solid-svg-icons";
 //import { faBell} from "@fortawesome/free-regular-svg-icons";
-library.add(faEllipsis, faPlus, faBolt, faAngleLeft, faMagnifyingGlass, faTag, faCircle, faTrashCan, faEnvelope, faFileLines, faShield);
+library.add(
+  faEllipsis,
+  faPlus,
+  faBolt,
+  faAngleLeft,
+  faMagnifyingGlass,
+  faTag,
+  faCircle,
+  faTrashCan,
+  faEnvelope,
+  faFileLines,
+  faShield,
+  faToggleOff,
+  faToggleOn
+);
 
 export default FontAwesomeIcon;
