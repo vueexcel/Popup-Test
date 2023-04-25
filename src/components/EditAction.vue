@@ -49,12 +49,12 @@
       <div class="flex">
         <div>Key</div>
         <div>Value</div>
-        <font-awesome-icon icon="fa-solid fa-plus" class="header-actionBox-icon cursor-pointer" @click="addNewKeyValue" />
+        <font-awesome-icon icon="fa-solid fa-plus" class="header-actionBox-icon add-header cursor-pointer" @click="addNewKeyValue" />
       </div>
       <div class="flex border-top" v-for="item in httpRequestData.header" :key="item.id">
         <input type="text" placeholder="Enter Key..." class="keyValueInput" v-model="item.key" @change="setHttpRequest">
         <input type="text" placeholder="Enter Value..." class="keyValueInput" v-model="item.value" @change="setHttpRequest">
-        <font-awesome-icon icon="fa-solid fa-trash-can" class="header-actionBox-icon cursor-pointer" @click="deleteKeyValue(item.id)" />
+        <font-awesome-icon icon="fa-solid fa-trash-can" class="header-actionBox-icon delete-header cursor-pointer" @click="deleteKeyValue(item.id)" />
       </div>
     </div>
     <p class="label">Request Body</p>
@@ -123,6 +123,13 @@ const setHttpRequest = () => {
 <style lang="scss" scoped>
 .action-body {
   padding: 22px;
+}
+.add-header{
+  color: $blue;
+  font-size: 1.2rem;
+}
+.delete-header {
+  color: $secondary;
 }
 .tagBox{
   display: flex;
