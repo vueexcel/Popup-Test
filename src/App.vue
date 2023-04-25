@@ -4,54 +4,17 @@
       <div class="assignedActionContainer">
         <EditAction v-if="selectedAction && selectedAction.id" />
         <ListAction v-else />
-        <!-- <ReuseButton v-for="(tag,index) in selectedTag" :key="index">
-          <template #icon>
-            <font-awesome-icon
-              icon="fa-solid fa-circle"
-              style="margin-right: 15px"
-              :style="{ color: '#298188' }"
-            />
-          </template>
-          {{ tag.name }}
-          <template #delete>
-            <font-awesome-icon
-              icon="fa-solid fa-trash-can"
-              style="color: #9DA8B4"
-            />
-          </template>
-        </ReuseButton> -->
-
       </div>
     </div>
     <div class="content">
       <div class="content-wrapper">
         <!-- This is shown when no actions are present -->
-        <div class="content-empty" v-if="checkSatisfied">
+        <div class="content-empty" v-if="noActionAdded">
           <p>Your actions will<br />appear here</p>
         </div>
-
         <div class="content-filled" v-else>
 
-          <!-- This is to be shown when we have actions present -->
-          <!-- <div
-            class="content"
-            v-for="(newAction, index) in this.selectedActions"
-            :key="index"
-          >
-            {{ newAction.actionName }}
-          </div> -->
-
           <ActionDetail />
-
-          <!-- Detailed Actions are for when tabs are created inside of an action and need to show added tabs on the right side of side bar component -->
-          <!-- <DetailedActions v-for="(tag, index) in tags" :key="index">
-                <template #icon>
-                  <font-awesome-icon icon="fa-solid fa-circle" style="margin-right: 15px;" :style="{color: `${tag.color}`}" />
-                </template>
-                <template #content>
-                  Tag {{tag.name}}
-                </template>
-            </DetailedActions> -->
         </div>
       </div>
     </div>
@@ -59,7 +22,6 @@
 </template>
 
 <script setup>
-// import ReuseButton from './components/ReuseButton.vue'
 import { computed } from 'vue';
 import { useStore } from 'vuex'
 import ActionDetail from './components/ActionDetail.vue'
@@ -72,16 +34,13 @@ const selectedAction = computed(() => {
   return store.getters.getSelectedStore;
 })
 
+const noActionAdded = computed(()=> {
+  return store.getters.getRandomSelectedActions.length === 0;
+})
+
 </script>
 
 <style lang="scss">
-.bg1 {
-  //background-color:red;
-  color: red;
-}
-.bg2 {
-  background-color: pink;
-}
 body {
   margin: 0;
   padding: 0;
@@ -96,6 +55,19 @@ input:focus {
 }
 .border {
   border: 2px solid red;
+}
+
+.border-top {
+  border-top: 1px solid $muted-light;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.px-1{
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .search-actions {
@@ -124,7 +96,11 @@ input:focus {
 
   .sidebar {
     position: relative;
-    @include sidebar();
+    max-width: 360px;
+    height: calc(100vh - 32px);
+    overflow: auto;
+    background-color: $white;
+    border-radius: 1rem;
 
     .assignedActionContainer {
       width: 100%;
@@ -160,39 +136,6 @@ input:focus {
           font-size: 20px;
         }
       }
-      .control {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        display: flex;
-        min-height: 91px;
-        align-items: center;
-        padding-left: 22px;
-        padding-right: 22px;
-        justify-content: space-between;
-        border: 1px solid $muted-light;
-        box-shadow: 0px 14px 60px rgba(0, 0, 0, 0.09);
-        border-bottom-left-radius: 14px;
-        border-bottom-right-radius: 14px;
-        .cancel,
-        .confirm {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 47px;
-          width: 151px;
-          border-radius: 1rem;
-          cursor: pointer;
-        }
-        .cancel {
-          @include btn($primary, $white);
-        }
-
-        .confirm {
-          @include btn($white, $blue);
-        }
-      }
     }
     .addActionsContainer {
       width: 100%;
@@ -210,6 +153,8 @@ input:focus {
 
   .content {
     width: calc(100vw - 392px);
+    height: calc(100vh - 4.1rem);
+    overflow: auto;
     grid-column: 2 / span 3;
     background-color: $white;
     border-radius: 1rem;

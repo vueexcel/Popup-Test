@@ -22,7 +22,6 @@ const emit = defineEmits(['routeBack']);
 const props = defineProps(['showActionOption']);
 const { showActionOption } = toRefs(props);
 
-// const isInActive = ref(false);
 const makeCurrentActionInactive = () => {
   store.dispatch('makeActionInActive');
   emit('routeBack');

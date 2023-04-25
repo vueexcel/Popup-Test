@@ -81,6 +81,9 @@ export default createStore({
     },
     deleteAction({commit}) {
       commit('DELETE_ACTION');
+    },
+    setHttpReqest({commit}, payload) {
+      commit('SET_SELECTED_STORE_DATA', payload);
     }
   }
 })

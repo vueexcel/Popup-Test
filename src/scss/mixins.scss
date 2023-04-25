@@ -2,20 +2,11 @@
     border: $width $type $color;
 }
 
-@mixin btn($color: $blue, $bgColor: $white, $borderColor: $muted-light) {
+@mixin btn($color: $primary, $bgColor: $white, $borderColor: $muted-light) {
     @include bordered($color: $borderColor);
-    //border-radius: 1rem;
     color: $color;
     background-color: $bgColor;
     font-size: 1rem;
-}
-
-
-@mixin sidebar() {
-    max-width: 360px;
-    height: calc(100vh - 32px);
-    background-color: $white;
-    border-radius: 1rem;
 }
 
 @mixin actiontitle {
@@ -31,14 +22,12 @@
         display: flex;
         padding: 17px 0px;
         align-items: center;
-        //border:2px solid red;
         .list-tag {
           font-size: 1.3rem;
           margin-right: 16px;
           color: $secondary;
         }
         .list-info {
-          // border: 2px solid red;
           display: flex;
           width: 100%;
           align-items: center;
@@ -49,7 +38,6 @@
           font-size: 16px;
           color: $primary;
           .list-checkbox {
-            // @include bordered($color: $muted-light, $type: solid);
             border-radius: 8px;
             margin-right: 0px;
           }

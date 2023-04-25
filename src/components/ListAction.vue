@@ -15,7 +15,7 @@
   </HeaderSection>
 
   <div class="action-panel">
-    <div style="width: 100%">
+    <div class="width-100">
     <div v-if="!showAddAction">
       <div class="action-panel-title">Assigned actions</div>
       <div class="action-panel-description">
@@ -30,9 +30,9 @@
           :key="index"
           @click="setSelectedAction(selectedOption)"
           :style="
-            selectedOption.actionId === '1'
+            index === 0
               ? 'border-top-left-radius:1rem;border-top-right-radius:1rem'
-              : 'border-radius:0rem'
+              : ''
           "
           :disabled="!selectedOption.isActive"
         >
@@ -51,10 +51,10 @@
         </button>
         <button
           class="add-actions"
-          :style="
+          :class="
             randomSelectedActions.length
-              ? `border-bottom-left-radius:1rem;border-bottom-right-radius:1rem`
-              : 'border-radius:1rem;margin-top:22px;'
+              ? 'bottom-radius'
+              : 'add-actions--alone'
           "
           @click="addActionToSidebar"
         >
@@ -95,7 +95,6 @@
               <input type="checkbox" class="list-checkbox" v-model="list.value" @change="selectedChecks"/>
             </div>
           </div>
-          <!-- <button @click="submit()">Submit</button> -->
         </div>
       </div>
       <div class="app">
@@ -108,13 +107,11 @@
           </div>
         </div>
       </div>
-      <!-- This goes at the bottom of the sidebar, is shown only when we are done selecting the actions -->
       <div class="control" v-if="selectedActions.length">
-        <div class="cancel" @click="hideAddActionPannel">Cancel</div>
-        <div class="confirm" @click="addSelectedActionToSidebar">Confirm</div>
+        <button class="cancel" @click="hideAddActionPannel">Cancel</button>
+        <button class="confirm" @click="addSelectedActionToSidebar">Confirm</button>
       </div>
     </div>
-
     </div>
   </div>
 </template>
@@ -204,6 +201,49 @@ const setSelectedAction = (action) => {
 </script>
 
 <style lang="scss" scoped>
+.bottom-radius{
+  border-bottom-left-radius:1rem;
+  border-bottom-right-radius:1rem
+}
+.add-actions--alone{
+  border-radius:1rem;
+  margin-top:22px;
+}
+
+.control {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  min-height: 91px;
+  align-items: center;
+  padding-left: 22px;
+  padding-right: 22px;
+  justify-content: space-between;
+  border: 1px solid $muted-light;
+  box-shadow: 0px 14px 60px rgba(0, 0, 0, 0.09);
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  .cancel,
+  .confirm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 47px;
+    width: 151px;
+    border-radius: 1rem;
+    cursor: pointer;
+  }
+  .cancel {
+    @include btn($primary, $white);
+  }
+
+  .confirm {
+    @include btn($white, $blue);
+  }
+}
+
 .action-panel {
   width: calc(100% - 44px);
   padding: 22px;
@@ -232,11 +272,11 @@ const setSelectedAction = (action) => {
     display: flex;
     align-items: center;
     cursor: pointer;
+    color: $primary;
     .selected-action-icon {
       font-size: 1rem;
     }
     .selected-action-title {
-      color: $primary;
       margin-left: 16px;
       font-family: "Inter";
       font-style: normal;

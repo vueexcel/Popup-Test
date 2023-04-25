@@ -37,9 +37,9 @@
   <!-- form for http request  -->
   <div class="action-body" v-if="selectedAction.actionId === '5'">
     <p class="label">Request Endpoint</p>
-    <input type="url" class="requestEndpointInput" placeholder="Enter Endpoint...">
+    <input type="url" class="requestEndpointInput" placeholder="Enter Endpoint..." v-model="httpRequestData.endpoint" @change="setHttpRequest">
     <p class="label">Request Method</p>
-    <select name="requestMethod" id="requestMethod" @change="setRequestMethod">
+    <select name="requestMethod" id="requestMethod" @change="setHttpRequest" v-model="httpRequestData.method">
       <option value="Post" selected>Post</option>
       <option value="Put">Put</option>
       <option value="Delete">Delete</option>
@@ -51,14 +51,14 @@
         <div>Value</div>
         <font-awesome-icon icon="fa-solid fa-plus" class="header-actionBox-icon cursor-pointer" @click="addNewKeyValue" />
       </div>
-      <div class="flex border-top" v-for="item in requestkeyValues" :key="item.id">
-        <input type="text" placeholder="Enter Key..." class="keyValueInput" v-model="item.key">
-        <input type="text" placeholder="Enter Value..." class="keyValueInput" v-model="item.vlaue">
+      <div class="flex border-top" v-for="item in httpRequestData.header" :key="item.id">
+        <input type="text" placeholder="Enter Key..." class="keyValueInput" v-model="item.key" @change="setHttpRequest">
+        <input type="text" placeholder="Enter Value..." class="keyValueInput" v-model="item.value" @change="setHttpRequest">
         <font-awesome-icon icon="fa-solid fa-trash-can" class="header-actionBox-icon cursor-pointer" @click="deleteKeyValue(item.id)" />
       </div>
     </div>
     <p class="label">Request Body</p>
-    <textarea cols="30" rows="10"></textarea>
+    <textarea cols="30" rows="10" v-model="httpRequestData.body" @change="setHttpRequest"></textarea>
   </div>
 </template>
 
@@ -94,20 +94,29 @@ const deleteTag = (id) => {
 }
 
 // http reqest section
-const requestkeyValues = ref([]);
-const setRequestMethod = (event) => {
-  console.log('selected method is ', event.target.value);
-}
+const httpRequestData = ref({
+  endpoint: '',
+  method: 'Post',
+  header: [],
+  body: ''
+})
+
 const addNewKeyValue = () => {
-  requestkeyValues.value.push({key: '', value: '', id: uuid.v4()})
+  httpRequestData.value.header.push({key: '', value: '', id: uuid.v4()})
 }
 const deleteKeyValue = (id) => {
-  requestkeyValues.value = requestkeyValues.value.filter(el=> {
+  let filteredResult = httpRequestData.value.header.filter(el=> {
     if(el.id === id) {
       return null;
     }
     return el;
   })
+  httpRequestData.value.header = filteredResult;
+  setHttpRequest();
+}
+
+const setHttpRequest = () => {
+  store.dispatch('setHttpReqest', httpRequestData.value);
 }
 </script>
 
@@ -139,9 +148,6 @@ const deleteKeyValue = (id) => {
   justify-content: space-between;
   padding: 1rem;
   width: calc(100%-2rem);
-}
-.border-top {
-  border-top: 1px solid $muted-light;
 }
 .requestEndpointInput, textarea{
   border: 1px solid $muted-light;
