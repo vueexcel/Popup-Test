@@ -1,5 +1,5 @@
 <template>
-  <HeaderSection v-if="!showAddAction" :show-action-option="true">
+  <HeaderSection v-if="!showAddAction">
     <template #title>
       <div class="header-title" >
         <font-awesome-icon icon="fa-bolt" /> Action

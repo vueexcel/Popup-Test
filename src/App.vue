@@ -53,9 +53,6 @@ input {
 input:focus {
   outline: none;
 }
-.border {
-  border: 2px solid red;
-}
 
 .border-top {
   border-top: 1px solid $muted-light;
