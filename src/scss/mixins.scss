@@ -2,7 +2,7 @@
     border: $width $type $color;
 }
 
-@mixin btn($color: $primary, $bgColor: $white, $borderColor: $muted-light) {
+@mixin btn($color: $blue, $bgColor: $white, $borderColor: $muted-light) {
     @include bordered($color: $borderColor);
     color: $color;
     background-color: $bgColor;
